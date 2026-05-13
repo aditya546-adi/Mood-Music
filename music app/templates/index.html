@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mood-Based Music Recommender — Pick your vibe and get curated song suggestions across Telugu, Hindi and English." />
+    <title>Mood Music — Pick Your Vibe 🎵</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- ── Header ────────────────────────── -->
+        <header class="header">
+            <span class="header__icon">🎵</span>
+            <h1 class="header__title">Mood Music</h1>
+            <p class="header__subtitle">Pick your vibe. We'll handle the playlist.</p>
+        </header>
+
+        <!-- ── Selection UI ──────────────────── -->
+        <div id="selection-ui">
+
+            <!-- Mood Picker -->
+            <section class="section-card" id="mood-section">
+                <p class="section-card__label">How are you feeling?</p>
+                <div class="mood-grid">
+                    <button class="mood-btn" data-mood="sad" id="mood-sad">
+                        <span class="mood-btn__emoji">😢</span> Sad
+                    </button>
+                    <button class="mood-btn" data-mood="hype" id="mood-hype">
+                        <span class="mood-btn__emoji">🔥</span> Hype
+                    </button>
+                    <button class="mood-btn" data-mood="chill" id="mood-chill">
+                        <span class="mood-btn__emoji">🌙</span> Chill
+                    </button>
+                    <button class="mood-btn" data-mood="romantic" id="mood-romantic">
+                        <span class="mood-btn__emoji">❤️</span> Romantic
+                    </button>
+                    <button class="mood-btn" data-mood="angry" id="mood-angry">
+                        <span class="mood-btn__emoji">😡</span> Angry
+                    </button>
+                    <button class="mood-btn" data-mood="surprise" id="mood-surprise">
+                        <span class="mood-btn__emoji">🎲</span> Surprise Me
+                    </button>
+                </div>
+            </section>
+
+            <!-- Filters -->
+            <section class="section-card" id="filter-section">
+                <p class="section-card__label">Optional Filters</p>
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="filter-language">Language</label>
+                        <select id="filter-language">
+                            <option value="all">All Languages</option>
+                            <option value="telugu">Telugu</option>
+                            <option value="hindi">Hindi</option>
+                            <option value="english">English</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-energy">Energy Level</label>
+                        <select id="filter-energy">
+                            <option value="all">Any Energy</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ── Loading Spinner ───────────────── -->
+        <div class="loader-wrapper" id="loader">
+            <div class="spinner"></div>
+            <p class="loader-text">Finding your perfect tracks…</p>
+        </div>
+
+        <!-- ── Results ───────────────────────── -->
+        <div class="results-area" id="results">
+            <p class="results-caption" id="results-caption"></p>
+            <div class="song-list" id="song-list"></div>
+            <div class="reset-wrapper">
+                <button class="reset-btn" id="reset-btn">🔄 Try Another Mood</button>
+            </div>
+        </div>
+
+        <!-- ── Footer ────────────────────────── -->
+        <footer class="footer">
+            Built with 💜 — <span>Mood Music</span> &copy; 2026
+        </footer>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

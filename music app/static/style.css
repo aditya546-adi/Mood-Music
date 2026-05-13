@@ -1,0 +1,475 @@
+/* ═══════════════════════════════════════════════
+   Mood Music Recommender — Dark Neon Theme
+   ═══════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── CSS Custom Properties ──────────────────── */
+:root {
+    --bg-primary:    #0a0a0f;
+    --bg-card:       #12121a;
+    --bg-card-hover: #1a1a28;
+    --bg-glass:      rgba(18, 18, 26, 0.85);
+    --text-primary:  #e8e8f0;
+    --text-secondary:#8888a0;
+    --text-muted:    #555570;
+    --neon-cyan:     #00e5ff;
+    --neon-purple:   #b366ff;
+    --neon-pink:     #ff4081;
+    --neon-green:    #39ff14;
+    --neon-orange:   #ff9100;
+    --neon-red:      #ff1744;
+    --gradient-main: linear-gradient(135deg, #00e5ff 0%, #b366ff 100%);
+    --gradient-warm: linear-gradient(135deg, #ff4081 0%, #ff9100 100%);
+    --border-subtle: rgba(136, 136, 160, 0.12);
+    --shadow-neon:   0 0 20px rgba(0, 229, 255, 0.15);
+    --radius-sm:     8px;
+    --radius-md:     14px;
+    --radius-lg:     20px;
+    --radius-xl:     28px;
+    --transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset & Base ───────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Ambient background glow */
+body::before {
+    content: '';
+    position: fixed;
+    top: -40%;
+    left: -20%;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+body::after {
+    content: '';
+    position: fixed;
+    bottom: -30%;
+    right: -20%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(179,102,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Layout Container ──────────────────────── */
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Header / Brand ────────────────────────── */
+.header {
+    text-align: center;
+    padding: 3rem 0 2.5rem;
+}
+
+.header__icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.header__title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.header__subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-top: 0.4rem;
+    font-weight: 400;
+}
+
+/* ── Section Cards (glass) ─────────────────── */
+.section-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.section-card__label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+}
+
+/* ── Mood Buttons Grid ─────────────────────── */
+.mood-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.mood-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.2rem 0.5rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.mood-btn__emoji {
+    font-size: 1.8rem;
+    transition: transform var(--transition);
+}
+
+.mood-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.mood-btn:hover {
+    transform: translateY(-4px);
+    border-color: transparent;
+    box-shadow: var(--shadow-neon);
+}
+
+.mood-btn:hover .mood-btn__emoji {
+    transform: scale(1.2);
+}
+
+.mood-btn:active {
+    transform: translateY(-1px) scale(0.97);
+}
+
+/* Per-mood neon colors */
+.mood-btn[data-mood="sad"]:hover         { background: rgba(0,229,255,0.12); border-color: var(--neon-cyan); box-shadow: 0 0 24px rgba(0,229,255,0.2); }
+.mood-btn[data-mood="hype"]:hover        { background: rgba(255,145,0,0.12); border-color: var(--neon-orange); box-shadow: 0 0 24px rgba(255,145,0,0.2); }
+.mood-btn[data-mood="chill"]:hover       { background: rgba(179,102,255,0.12); border-color: var(--neon-purple); box-shadow: 0 0 24px rgba(179,102,255,0.2); }
+.mood-btn[data-mood="romantic"]:hover    { background: rgba(255,64,129,0.12); border-color: var(--neon-pink); box-shadow: 0 0 24px rgba(255,64,129,0.2); }
+.mood-btn[data-mood="angry"]:hover       { background: rgba(255,23,68,0.12); border-color: var(--neon-red); box-shadow: 0 0 24px rgba(255,23,68,0.2); }
+.mood-btn[data-mood="surprise"]:hover    { background: rgba(57,255,20,0.12); border-color: var(--neon-green); box-shadow: 0 0 24px rgba(57,255,20,0.2); }
+
+/* ── Filter Row ────────────────────────────── */
+.filter-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 160px;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color var(--transition);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%238888a0'%3E%3Cpath d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 0 3px rgba(0,229,255,0.1);
+}
+
+/* ── Loading Spinner ───────────────────────── */
+.loader-wrapper {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 0;
+    gap: 1.5rem;
+}
+
+.loader-wrapper.active {
+    display: flex;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border-subtle);
+    border-top-color: var(--neon-cyan);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.loader-text {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    animation: fade-pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Results Area ──────────────────────────── */
+.results-area {
+    display: none;
+}
+
+.results-area.active {
+    display: block;
+    animation: slide-up 0.5s ease-out;
+}
+
+.results-caption {
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 1.75rem;
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ── Song Cards ────────────────────────────── */
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.song-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    transition: all var(--transition);
+    animation: fade-in-up 0.4s ease-out both;
+}
+
+.song-card:nth-child(1) { animation-delay: 0.05s; }
+.song-card:nth-child(2) { animation-delay: 0.12s; }
+.song-card:nth-child(3) { animation-delay: 0.19s; }
+.song-card:nth-child(4) { animation-delay: 0.26s; }
+.song-card:nth-child(5) { animation-delay: 0.33s; }
+
+.song-card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(0,229,255,0.25);
+    transform: translateX(6px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+
+.song-card__number {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    min-width: 2rem;
+    text-align: center;
+    opacity: 0.5;
+}
+
+.song-card__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.song-card__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.song-card__artist {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-top: 0.15rem;
+}
+
+.play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border: none;
+    border-radius: 50px;
+    background: var(--gradient-main);
+    color: #0a0a0f;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.play-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(0,229,255,0.35);
+}
+
+.play-btn:active {
+    transform: scale(0.96);
+}
+
+.play-btn__icon {
+    font-size: 1rem;
+}
+
+/* ── Try Another Mood button ───────────────── */
+.reset-wrapper {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.reset-btn {
+    padding: 0.8rem 2rem;
+    border: 1px solid var(--neon-purple);
+    border-radius: 50px;
+    background: transparent;
+    color: var(--neon-purple);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.reset-btn:hover {
+    background: rgba(179,102,255,0.12);
+    box-shadow: 0 0 20px rgba(179,102,255,0.2);
+    transform: translateY(-2px);
+}
+
+/* ── Footer ────────────────────────────────── */
+.footer {
+    text-align: center;
+    padding: 3rem 0 1rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+.footer span {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════
+   Animations
+   ═══════════════════════════════════════════════ */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes fade-pulse {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+}
+
+@keyframes slide-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .header__title { font-size: 1.7rem; }
+    .mood-grid { grid-template-columns: repeat(2, 1fr); }
+    .section-card { padding: 1.4rem; }
+    .song-card { flex-wrap: wrap; }
+    .play-btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
+    .filter-row { flex-direction: column; }
+}
+
+@media (max-width: 380px) {
+    .app-container { padding: 1rem 0.75rem 3rem; }
+    .header { padding: 2rem 0 1.5rem; }
+    .header__title { font-size: 1.4rem; }
+}
